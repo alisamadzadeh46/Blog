@@ -1,0 +1,57 @@
+{% extends 'blog/base.html' %}
+{% load comment_tags %}
+{% load ratings %}
+{% load static %}
+{% load base_tags %}
+{% load humanize %}
+{% block title %} | {{ article.title }} {% endblock %}
+{% block main %}
+    <header class="masthead" style="background-image: url('{{ article.Image.url }}')">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <div class="site-heading" style="font-size: 20px">
+                        <h1>{{ article.title }}</h1>
+                        {% if article.is_special %}
+                            <span class="badge badge-danger"> ویژه</span>
+                        {% endif %}
+                        <time class="asirefontshod">{{ article.publish | naturaltime }}</time>
+                        <div>
+                            {% ratings article %}
+                        </div>
+                        <div>
+                            بازدید ها:{{ object.hits.count }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto text-justify">
+                    <aside>
+                        {% popular_articles %}
+                        {% hot_articles %}
+                    </aside>
+                    {% if object.is_special %}
+                        {% if user.is_authenticated and user.is_special_user or user == object.author or user.is_superuser %}
+                            {{ article.description|safe }}
+                        {% else %}
+                            {{ article.description|striptags|truncatewords:30 }}
+                            <p class="alert alert-warning"> این مقاله ویژه است</p>
+                            <a class="alert-link" href="#">خرید اشتراک</a>
+                        {% endif %}
+                    {% else %}
+                        {{ article.description|safe }}
+                    {% endif %}
+                    {% render_comments object request %}
+                    {% include_static_jquery %}
+                    {% include_bootstrap %}
+                </div>
+            </div>
+        </div>
+    </article>
+{% endblock %}

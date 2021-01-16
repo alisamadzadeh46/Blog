@@ -1,0 +1,10 @@
+<div class="popular_articles">
+    <h2 class="h4 asirefontshod">{{ title }}</h2>
+    <hr>
+    {% for a in articles %}
+        <div>
+            <a href="{% url 'blog:more' a.slug %}">{{ a.title }}</a>
+        </div>
+    {% endfor %}
+
+</div>

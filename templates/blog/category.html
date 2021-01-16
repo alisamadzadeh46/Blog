@@ -1,0 +1,68 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block main %}
+    <header class="masthead" style="background-image: url('{% static "blog/img/home-bg.jpg" %}')">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <div class="site-heading">
+                        <h1>وبلاگ</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                {% block header %}
+
+                {% endblock %}
+                {% for article in object_list %}
+                    <div class="post-preview asirefontshod">
+                        <a href="{% url 'blog:more' article.slug %}">
+                            <h2 class="post-title asirefontshod">
+                                {{ article.title }}
+                            </h2>
+                            <h3 class="post-subtitle asirefontshod">
+                                {{ article.description|truncatewords:30 }}
+                            </h3>
+                        </a>
+                        <p class="post-meta">نوشته شده توسط
+                            <a href="{% url 'blog:author' article.author %}">{{ article.author.get_full_name }}</a>
+                            {{ article.jpublish }}</p>
+
+                        <div>
+                            {% for cat in article.category.active %}
+                                <a href="{% url 'blog:category' cat.slug %}">#{{ cat.title }} </a>
+                            {% endfor %}
+                        </div>
+                        <div>
+                            بازدید ها:{{ article.hits.count }}
+                        </div>
+                    </div>
+                    <hr>
+                {% empty %}
+                    <p>متاسفانه محتوی برای نمایش وجود ندارد</p>
+                {% endfor %}
+
+                <!-- Pager -->
+                {% if is_paginated %}
+                    <div class="clearfix">
+
+                        {% if page_obj.has_previous %}
+                            <a class="btn btn-primary float-left asirefontshod ml-3"
+                               href="{% block previous_page_url %}{% endblock %}">پست های جدید &rarr;</a>
+                        {% endif %}
+                        {% if page_obj.has_next %}
+                            <a class="btn btn-primary float-left asirefontshod ml-3"
+                               href="{% block next_page_url %}{% endblock %}">پست های قدیمی &Larr;</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
