@@ -15,6 +15,7 @@ mac / windows / linux : virtualenv mypython
 4- Activate the virtual environment :
 
 mac / linux : source mypython/bin/activate
+
 windows: mypthon\Scripts\activate
 
 5- RUN pip install -r requirements.txt
